@@ -12,6 +12,7 @@
 import { reactive, toRefs, ref, onMounted } from "vue"
 import sIcon from "../icon/Icon.vue"
 export default {
+  name: 's-button',
   props: {
     icon: String,
     position: {
@@ -26,7 +27,6 @@ export default {
     loading: { type: Boolean, default: false },
   },
   setup(props, { emit }) {
-    const { loading } = props
     const buttonRef = ref(null)
     const state = reactive({ dotVisible: false, wave: false, slefLoading: false })
 
@@ -36,7 +36,7 @@ export default {
 
     const onClick = (e) => {
       emit('click', e)
-      if (loading) {
+      if (props.loading) {
         state.slefLoading = !state.slefLoading
       }
       state.wave = true
