@@ -51,7 +51,28 @@ export default defineComponent({
 
     return { optionsVisible, showOptions, addr, onUpdate, closeOptions, clearSelected }
   },
-  components: { sIcon, sCascaderItem }
+  methods: {
+    listenDocument(e) {
+      if (!this.$el.contains(e.target)) {
+        this.closeOptions()
+      }
+    }
+  },
+
+  watch: {
+    optionsVisible(val) {
+      if (val) {
+        document.addEventListener('click', this.listenDocument);
+      } else {
+        document.removeEventListener('click', this.listenDocument);
+      }
+    }
+  },
+  components: { sIcon, sCascaderItem },
+
+  beforeDestroy() {
+    document.removeEventListener('click', this.listenDocument);
+  }
 })
 </script>
 
