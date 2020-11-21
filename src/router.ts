@@ -4,6 +4,7 @@ import ButtonPage from './pages/ButtonPage.vue'
 import SwitchPage from './pages/SwitchPage.vue'
 import InputPage from './pages/InputPage.vue'
 import RadioPage from './pages/RadioPage.vue'
+import CascaderPage from './pages/CascaderPage.vue'
 const history = createWebHashHistory()
 
 export const router = createRouter({
@@ -13,6 +14,7 @@ export const router = createRouter({
     { path: '/button', component: ButtonPage },
     { path: '/switch', component: SwitchPage },
     { path: '/input', component: InputPage },
-    { path: '/radio', component: RadioPage }
+    { path: '/radio', component: RadioPage },
+    { path: '/cascader', component: CascaderPage }
   ]
 })
