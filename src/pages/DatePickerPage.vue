@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DatePicker></DatePicker>
+    <DatePicker default-value="2008-10-10" @change="change"></DatePicker>
   </div>
 </template>
 
@@ -8,10 +8,10 @@
 import { defineComponent } from 'vue'
 import DatePicker from '../packages/date-picker/DatePicker.vue'
 export default defineComponent({
-  setup() {
-
-
-    return {}
+  methods: {
+    change(date) {
+      console.log('change', date)
+    }
   },
   components: { DatePicker }
 })
