@@ -7,6 +7,7 @@ import RadioPage from './pages/RadioPage.vue'
 import CascaderPage from './pages/CascaderPage.vue'
 import DatePickerPage from './pages/DatePickerPage.vue'
 import TimePickerPage from './pages/TimePicker.vue'
+import GridPage from './pages/RowPage.vue'
 const history = createWebHashHistory()
 
 export const router = createRouter({
@@ -19,6 +20,7 @@ export const router = createRouter({
     { path: '/radio', component: RadioPage },
     { path: '/cascader', component: CascaderPage },
     { path: '/datePicker', component: DatePickerPage },
-    { path: '/timePicker', component: TimePickerPage }
+    { path: '/timePicker', component: TimePickerPage },
+    { path: '/grid', component: GridPage }
   ]
 })

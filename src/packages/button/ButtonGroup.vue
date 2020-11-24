@@ -11,10 +11,9 @@ export default defineComponent({
   setup(props, context) {
     let defaultSlots = context.slots.default()
     onMounted(() => {
-      console.log(defaultSlots)
       defaultSlots.forEach(node => {
         // @ts-ignore
-        if (node.type.name !== 's-button') throw new Error(`s-button-group的子元素应该全是s-button，否则会影响样式，但你的是${name}`)
+        if (node.type.name !== 's-button') throw new Error(`s-button-group的子元素应该全是s-button，否则会影响样式，但你的是${node.type}`)
       })
     })
     return {}
