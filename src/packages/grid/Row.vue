@@ -29,8 +29,6 @@ export default defineComponent({
         // @ts-ignore
         if (node.type.name !== 'sCol') throw new Error(`s-row的子元素应该全是s-col，否则会影响样式，但你的是${node.type}`)
       })
-      console.log(slots.default())
-
     })
 
     const rowStyle = computed(() => {
@@ -46,8 +44,6 @@ export default defineComponent({
         return [alignPosition && `align-${alignPosition}`]
       }
     })
-
-
 
     return { rowStyle, rowClass }
   }

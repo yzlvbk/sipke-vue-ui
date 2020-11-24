@@ -8,6 +8,7 @@ import CascaderPage from './pages/CascaderPage.vue'
 import DatePickerPage from './pages/DatePickerPage.vue'
 import TimePickerPage from './pages/TimePicker.vue'
 import GridPage from './pages/RowPage.vue'
+import ContainerPage from './pages/ContainerPage.vue'
 const history = createWebHashHistory()
 
 export const router = createRouter({
@@ -21,6 +22,7 @@ export const router = createRouter({
     { path: '/cascader', component: CascaderPage },
     { path: '/datePicker', component: DatePickerPage },
     { path: '/timePicker', component: TimePickerPage },
-    { path: '/grid', component: GridPage }
+    { path: '/grid', component: GridPage },
+    { path: '/container', component: ContainerPage }
   ]
 })
