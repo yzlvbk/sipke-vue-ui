@@ -1,9 +1,9 @@
 <template>
-  <div class="s-time-picker">
+  <div class="s-time-picker" ref="pickerRef">
     <div class="input-wrapper">
       <s-icon name="setting" class="icon prefix" style="pointer-events:none;"></s-icon>
-      <input type="text" :value="value" @click="pickerVisible = true" placeholder="选择时间" />
-      <s-icon name="error" class="icon clear"></s-icon>
+      <input type="text" :value="value" @click="pickerVisible = true" @input="input" placeholder="选择时间" />
+      <s-icon name="error" class="icon clear" @click="clearValue"></s-icon>
     </div>
 
     <div class="spread" v-show="pickerVisible">
@@ -33,23 +33,60 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, toRefs, computed, watch } from 'vue'
+import { defineComponent, ref, reactive, toRefs, computed, watch, onMounted, onUnmounted } from 'vue'
 import sIcon from '../icon/Icon.vue'
 import tweenScroll from '../../utils/tweenScroll'
 export default defineComponent({
   name: 'sTimePicker',
-  setup() {
+  props: {
+    defaultValue: {
+      type: String,
+      validator(val: string) {
+        const pattern = /^([\d]{2}):([\d]{2}):([\d]{2})$/
+        if (pattern.test(val)) {
+          let hour = +RegExp.$1
+          let minute = +RegExp.$2
+          let second = +RegExp.$3
+          return hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59 && second >= 0 && second <= 59
+        }
+        return false
+      }
+    }
+  },
+  setup(props, { emit }) {
     const state = reactive({
-      pickerVisible: false,
-      hour: 1,
-      minute: 1,
-      second: 1,
-      timerId: null
+      pickerVisible: true,
+      hour: -1,
+      minute: -1,
+      second: -1
     })
 
+    const pickerRef = ref(null)
     const hourRef = ref(null)
     const minuteRef = ref(null)
     const secondRef = ref(null)
+
+    onMounted(() => {
+      // @ts-ignore
+      const defaultValue = props.defaultValue
+      if (defaultValue) {
+        const pattern = /^([\d]{2}):([\d]{2}):([\d]{2})$/
+        if (pattern.test(defaultValue)) {
+          state.hour = +RegExp.$1
+          state.minute = +RegExp.$2
+          state.second = +RegExp.$3
+          setTimeout(() => {
+            hourRef.value.scrollTop = state.hour * 32
+            minuteRef.value.scrollTop = state.minute * 32
+            secondRef.value.scrollTop = state.second * 32
+            state.pickerVisible = false
+          }, 0)
+        }
+      } else {
+        state.pickerVisible = false
+      }
+
+    })
 
     const value = computed(() => {
       if (state.hour >= 0 && state.minute >= 0 && state.second >= 0) {
@@ -73,6 +110,14 @@ export default defineComponent({
       tweenScroll(ref, { x: 0, y: target }, 200)
     }
 
+    watch(() => state.pickerVisible, (val) => {
+      if (val) {
+        document.addEventListener('click', listenDocument)
+      } else {
+        document.removeEventListener('click', listenDocument)
+      }
+    })
+
     watch(() => state.hour, (val) => {
       scroll(hourRef.value, 32 * val)
     })
@@ -84,7 +129,52 @@ export default defineComponent({
       scroll(secondRef.value, 32 * val)
     })
 
-    return { ...toRefs(state), value, handleClick, hourRef, minuteRef, secondRef }
+    watch(value, (val) => {
+      emit('change', val)
+    })
+
+    const input = (e) => {
+      let val = e.target.value
+      if (val.length < 8) { return }
+      const pattern = /^([\d]{2}):([\d]{2}):([\d]{2})$/
+      if (pattern.test(val)) {
+        let hour = +RegExp.$1
+        let minute = +RegExp.$2
+        let second = +RegExp.$3
+        if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59 && second >= 0 && second <= 59) {
+          state.hour = hour
+          state.minute = minute
+          state.second = second
+        } else {
+          e.target.value = value.value
+        }
+      } else {
+        e.target.value = value.value
+      }
+    }
+
+    const listenDocument = (e) => {
+      if (!pickerRef.value.contains(e.target)) {
+        if (!value) {
+          state.hour = -1
+          state.minute = -1
+          state.second = -1
+        }
+        state.pickerVisible = false
+      }
+    }
+
+    const clearValue = () => {
+      state.hour = -1
+      state.minute = -1
+      state.second = -1
+    }
+
+    onUnmounted(() => {
+      document.removeEventListener('click', listenDocument)
+    })
+
+    return { ...toRefs(state), value, handleClick, hourRef, minuteRef, secondRef, pickerRef, input, clearValue }
   },
   components: { sIcon }
 })
@@ -95,7 +185,6 @@ export default defineComponent({
 .s-time-picker {
   position: relative;
   width: 180px;
-  background: pink;
 
   > .input-wrapper {
     width: 180px;
@@ -164,7 +253,6 @@ export default defineComponent({
       justify-content: flex-start;
       width: 180px;
       height: 160px;
-      // background-color: purple;
 
       > .item {
         width: 60px;
