@@ -12,6 +12,7 @@ import ContainerPage from './pages/ContainerPage.vue'
 import SpreadPage from './pages/SpreadPage.vue'
 import CollapsePage from './pages/CollapsePage.vue'
 import WaterfullPage from './pages/WaterfullPage.vue'
+import StickyPage from './pages/StickyPage.vue'
 const history = createWebHashHistory()
 
 export const router = createRouter({
@@ -29,6 +30,7 @@ export const router = createRouter({
     { path: '/container', component: ContainerPage },
     { path: '/spread', component: SpreadPage },
     { path: '/collapse', component: CollapsePage },
-    { path: '/waterfull', component: WaterfullPage }
+    { path: '/waterfull', component: WaterfullPage },
+    { path: '/sticky', component: StickyPage }
   ]
 })
