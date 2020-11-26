@@ -13,6 +13,7 @@ import SpreadPage from './pages/SpreadPage.vue'
 import CollapsePage from './pages/CollapsePage.vue'
 import WaterfullPage from './pages/WaterfullPage.vue'
 import StickyPage from './pages/StickyPage.vue'
+import TabPage from './pages/TabPage.vue'
 const history = createWebHashHistory()
 
 export const router = createRouter({
@@ -31,6 +32,7 @@ export const router = createRouter({
     { path: '/spread', component: SpreadPage },
     { path: '/collapse', component: CollapsePage },
     { path: '/waterfull', component: WaterfullPage },
-    { path: '/sticky', component: StickyPage }
+    { path: '/sticky', component: StickyPage },
+    { path: '/tab', component: TabPage }
   ]
 })
