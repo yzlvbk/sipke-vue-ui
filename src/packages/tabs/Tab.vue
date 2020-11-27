@@ -1,14 +1,14 @@
 <template>
-  <div class="z-tab">
-    <div class="z-tab-header">
-      <div class="z-tab-header-title" :class="{'tab-active':activeKey===keys[index]}" v-for="(item,index) in titles"
+  <div class="s-tab">
+    <div class="s-tab-header">
+      <div class="s-tab-header-title" :class="{'tab-active':activeKey===keys[index]}" v-for="(item,index) in titles"
         :ref="el => {if(el) navItems[index] = el}" :key="item" @click="change(keys[index],$event)">{{ item }}
       </div>
-      <div class="z-tab-solid">
+      <div class="s-tab-solid">
         <div class="move-bar" :style="{left:barLeft,width:barWidth}"></div>
       </div>
     </div>
-    <div class="z-tab-content">
+    <div class="s-tab-content">
       <component :is="current" :key="current.props.key"></component>
     </div>
   </div>
@@ -17,7 +17,7 @@
 <script lang="ts">
 import { computed, ref, onMounted } from 'vue'
 export default {
-  name: 'z-tab',
+  name: 's-tab',
   props: {
     activeKey: {
       type: String
@@ -81,30 +81,31 @@ export default {
 </script>
 
 <style lang="scss">
-.z-tab {
-  .z-tab-header {
-    color: #393e46;
+@import '../../style/mixni.scss';
+.s-tab {
+  .s-tab-header {
+    color: $title;
     position: relative;
 
-    .z-tab-solid {
+    .s-tab-solid {
       position: absolute;
       bottom: 0;
       left: 0;
       height: 2px;
       width: 100%;
-      background: #eeeeee;
+      background: $border;
 
       .move-bar {
         position: absolute;
         width: 100px;
         top: 0;
         height: 2px;
-        background: #00adb5;
+        background: $p;
         transition: all 0.25s ease;
       }
     }
 
-    .z-tab-header-title {
+    .s-tab-header-title {
       display: inline-block;
       padding: 12px 16px;
       cursor: pointer;
@@ -113,7 +114,7 @@ export default {
     }
 
     .tab-active {
-      color: #00adb5;
+      color: $p;
     }
   }
 }
